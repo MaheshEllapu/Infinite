@@ -1,0 +1,7 @@
+C:\ICS_Mahesh_Data\Training_DotNet_with_SQL\C#\HandsOn\HandsOn6 (Md)\HandsOn6\HandsOn6\obj\Debug\HandsOn6.csproj.AssemblyReference.cache
+C:\ICS_Mahesh_Data\Training_DotNet_with_SQL\C#\HandsOn\HandsOn6 (Md)\HandsOn6\HandsOn6\obj\Debug\HandsOn6.csproj.CoreCompileInputs.cache
+C:\ICS_Mahesh_Data\Training_DotNet_with_SQL\C#\HandsOn\HandsOn6 (Md)\HandsOn6\HandsOn6\bin\Debug\HandsOn6.exe.config
+C:\ICS_Mahesh_Data\Training_DotNet_with_SQL\C#\HandsOn\HandsOn6 (Md)\HandsOn6\HandsOn6\bin\Debug\HandsOn6.exe
+C:\ICS_Mahesh_Data\Training_DotNet_with_SQL\C#\HandsOn\HandsOn6 (Md)\HandsOn6\HandsOn6\bin\Debug\HandsOn6.pdb
+C:\ICS_Mahesh_Data\Training_DotNet_with_SQL\C#\HandsOn\HandsOn6 (Md)\HandsOn6\HandsOn6\obj\Debug\HandsOn6.exe
+C:\ICS_Mahesh_Data\Training_DotNet_with_SQL\C#\HandsOn\HandsOn6 (Md)\HandsOn6\HandsOn6\obj\Debug\HandsOn6.pdb
