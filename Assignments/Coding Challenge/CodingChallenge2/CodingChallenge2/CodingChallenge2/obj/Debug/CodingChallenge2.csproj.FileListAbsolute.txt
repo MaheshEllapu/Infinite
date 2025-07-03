@@ -1,0 +1,7 @@
+C:\C_Sharp\Assignments\Coding Challenge\CodingChallenge2\CodingChallenge2\CodingChallenge2\bin\Debug\CodingChallenge2.exe.config
+C:\C_Sharp\Assignments\Coding Challenge\CodingChallenge2\CodingChallenge2\CodingChallenge2\bin\Debug\CodingChallenge2.exe
+C:\C_Sharp\Assignments\Coding Challenge\CodingChallenge2\CodingChallenge2\CodingChallenge2\bin\Debug\CodingChallenge2.pdb
+C:\C_Sharp\Assignments\Coding Challenge\CodingChallenge2\CodingChallenge2\CodingChallenge2\obj\Debug\CodingChallenge2.csproj.AssemblyReference.cache
+C:\C_Sharp\Assignments\Coding Challenge\CodingChallenge2\CodingChallenge2\CodingChallenge2\obj\Debug\CodingChallenge2.csproj.CoreCompileInputs.cache
+C:\C_Sharp\Assignments\Coding Challenge\CodingChallenge2\CodingChallenge2\CodingChallenge2\obj\Debug\CodingChallenge2.exe
+C:\C_Sharp\Assignments\Coding Challenge\CodingChallenge2\CodingChallenge2\CodingChallenge2\obj\Debug\CodingChallenge2.pdb
