@@ -1,0 +1,7 @@
+C:\C_Sharp\Assignments\Coding Challenge\CodingChallenge3\CodingChallenge3\CodingChallenge3\obj\Debug\CodingChallenge3.csproj.AssemblyReference.cache
+C:\C_Sharp\Assignments\Coding Challenge\CodingChallenge3\CodingChallenge3\CodingChallenge3\obj\Debug\CodingChallenge3.csproj.CoreCompileInputs.cache
+C:\C_Sharp\Assignments\Coding Challenge\CodingChallenge3\CodingChallenge3\CodingChallenge3\bin\Debug\CodingChallenge3.exe.config
+C:\C_Sharp\Assignments\Coding Challenge\CodingChallenge3\CodingChallenge3\CodingChallenge3\bin\Debug\CodingChallenge3.exe
+C:\C_Sharp\Assignments\Coding Challenge\CodingChallenge3\CodingChallenge3\CodingChallenge3\bin\Debug\CodingChallenge3.pdb
+C:\C_Sharp\Assignments\Coding Challenge\CodingChallenge3\CodingChallenge3\CodingChallenge3\obj\Debug\CodingChallenge3.exe
+C:\C_Sharp\Assignments\Coding Challenge\CodingChallenge3\CodingChallenge3\CodingChallenge3\obj\Debug\CodingChallenge3.pdb
