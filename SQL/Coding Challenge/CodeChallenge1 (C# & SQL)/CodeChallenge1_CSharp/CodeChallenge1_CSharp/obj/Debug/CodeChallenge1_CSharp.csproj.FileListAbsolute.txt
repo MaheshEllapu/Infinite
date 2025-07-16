@@ -1,0 +1,7 @@
+C:\C_Sharp\SQL\Coding Challenge\CodeChallenge1 (C# & SQL)\CodeChallenge1_CSharp\CodeChallenge1_CSharp\bin\Debug\CodeChallenge1_CSharp.exe.config
+C:\C_Sharp\SQL\Coding Challenge\CodeChallenge1 (C# & SQL)\CodeChallenge1_CSharp\CodeChallenge1_CSharp\bin\Debug\CodeChallenge1_CSharp.exe
+C:\C_Sharp\SQL\Coding Challenge\CodeChallenge1 (C# & SQL)\CodeChallenge1_CSharp\CodeChallenge1_CSharp\bin\Debug\CodeChallenge1_CSharp.pdb
+C:\C_Sharp\SQL\Coding Challenge\CodeChallenge1 (C# & SQL)\CodeChallenge1_CSharp\CodeChallenge1_CSharp\obj\Debug\CodeChallenge1_CSharp.csproj.AssemblyReference.cache
+C:\C_Sharp\SQL\Coding Challenge\CodeChallenge1 (C# & SQL)\CodeChallenge1_CSharp\CodeChallenge1_CSharp\obj\Debug\CodeChallenge1_CSharp.csproj.CoreCompileInputs.cache
+C:\C_Sharp\SQL\Coding Challenge\CodeChallenge1 (C# & SQL)\CodeChallenge1_CSharp\CodeChallenge1_CSharp\obj\Debug\CodeChallenge1_CSharp.exe
+C:\C_Sharp\SQL\Coding Challenge\CodeChallenge1 (C# & SQL)\CodeChallenge1_CSharp\CodeChallenge1_CSharp\obj\Debug\CodeChallenge1_CSharp.pdb
