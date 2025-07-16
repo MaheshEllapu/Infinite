@@ -1,5 +1,5 @@
 create database Assessments
-
+use Assessments
 -------------------------------------- QUESTION 1 --------------------------------------
 create table Books
 (ID int primary key,
