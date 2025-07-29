@@ -1,0 +1,7 @@
+C:\Infinite\ADO\Assignments\Assignment-1 (29-07-25)\Assignment-1_Display_Function\Assignment-1_Display_Function\bin\Debug\Assignment-1_Display_Function.exe.config
+C:\Infinite\ADO\Assignments\Assignment-1 (29-07-25)\Assignment-1_Display_Function\Assignment-1_Display_Function\bin\Debug\Assignment-1_Display_Function.exe
+C:\Infinite\ADO\Assignments\Assignment-1 (29-07-25)\Assignment-1_Display_Function\Assignment-1_Display_Function\bin\Debug\Assignment-1_Display_Function.pdb
+C:\Infinite\ADO\Assignments\Assignment-1 (29-07-25)\Assignment-1_Display_Function\Assignment-1_Display_Function\obj\Debug\Assignment-1_Display_Function.csproj.AssemblyReference.cache
+C:\Infinite\ADO\Assignments\Assignment-1 (29-07-25)\Assignment-1_Display_Function\Assignment-1_Display_Function\obj\Debug\Assignment-1_Display_Function.csproj.CoreCompileInputs.cache
+C:\Infinite\ADO\Assignments\Assignment-1 (29-07-25)\Assignment-1_Display_Function\Assignment-1_Display_Function\obj\Debug\Assignment-1_Display_Function.exe
+C:\Infinite\ADO\Assignments\Assignment-1 (29-07-25)\Assignment-1_Display_Function\Assignment-1_Display_Function\obj\Debug\Assignment-1_Display_Function.pdb
