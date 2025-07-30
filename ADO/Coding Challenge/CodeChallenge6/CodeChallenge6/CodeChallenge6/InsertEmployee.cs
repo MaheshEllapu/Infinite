@@ -27,7 +27,7 @@ namespace CodeChallenge6
 
         static void Main(string[] args)
         {
-            InsertData(); // calling insert using stored procedure
+            InsertData();
             Console.ReadLine();
         }
 
@@ -56,12 +56,10 @@ namespace CodeChallenge6
                 cmd = new SqlCommand("InsertEmployee", con);
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                // input parameters (name must match stored procedure)
                 cmd.Parameters.AddWithValue("@Name", empname);
                 cmd.Parameters.AddWithValue("@Gender", gender);
                 cmd.Parameters.AddWithValue("@Salary", salary);
 
-                // output parameters
                 SqlParameter outEmpId = new SqlParameter("@GeneratedEmpid", SqlDbType.Int)
                 {
                     Direction = ParameterDirection.Output
