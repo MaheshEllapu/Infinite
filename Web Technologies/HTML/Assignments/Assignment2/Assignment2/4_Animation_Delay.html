@@ -1,0 +1,44 @@
+﻿<!--4. How to make use of animation-delay , and then restart again-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .box {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            animation: fadeMove 2s ease-in-out;
+            animation-delay: 1s;
+        }
+
+        @keyframes fadeMove {
+            0% {
+                opacity: 0;
+                transform: translateY(0);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(50px);
+            }
+        }
+
+        button {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="box" id="box"></div>
+    <button onclick="restartAnimation()">Restart</button>
+
+    <script>function restartAnimation() {
+      const box = document.getElementById("box");
+      box.style.animation = 'none';
+      box.offsetHeight; // Trigger reflow
+      box.style.animation = 'fadeMove 2s ease-in-out 1s';
+    }</script>
+</body>
+</html>

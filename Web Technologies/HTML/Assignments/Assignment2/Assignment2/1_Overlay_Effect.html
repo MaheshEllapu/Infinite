@@ -1,0 +1,45 @@
+﻿<!--1. Using HTML, CSS create display an image overlay effect on hover-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .container {
+            position: relative;
+            width: 300px;
+        }
+
+        .image {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            opacity: 0;
+            transition: 0.5s ease;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            text-align: center;
+            padding-top: 40%;
+            font-size: 20px;
+        }
+
+        .container:hover .overlay {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="C:\Infinite\Web Technologies\HTML\Assignments\Assignment2\Overlay_Effect.jpg" class="image" alt="Sample">
+        <div class="overlay">Hovered!</div>
+    </div>
+</body>
+</html>
