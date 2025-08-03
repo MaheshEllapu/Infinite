@@ -1,0 +1,7 @@
+C:\Infinite\Web Technologies\HTML\Assignments\To-Do List\ToDoList\ToDoList\bin\Debug\ToDoList.exe.config
+C:\Infinite\Web Technologies\HTML\Assignments\To-Do List\ToDoList\ToDoList\bin\Debug\ToDoList.exe
+C:\Infinite\Web Technologies\HTML\Assignments\To-Do List\ToDoList\ToDoList\bin\Debug\ToDoList.pdb
+C:\Infinite\Web Technologies\HTML\Assignments\To-Do List\ToDoList\ToDoList\obj\Debug\ToDoList.csproj.AssemblyReference.cache
+C:\Infinite\Web Technologies\HTML\Assignments\To-Do List\ToDoList\ToDoList\obj\Debug\ToDoList.csproj.CoreCompileInputs.cache
+C:\Infinite\Web Technologies\HTML\Assignments\To-Do List\ToDoList\ToDoList\obj\Debug\ToDoList.exe
+C:\Infinite\Web Technologies\HTML\Assignments\To-Do List\ToDoList\ToDoList\obj\Debug\ToDoList.pdb
