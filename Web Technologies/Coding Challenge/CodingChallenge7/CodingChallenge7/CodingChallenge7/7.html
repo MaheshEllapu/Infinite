@@ -1,0 +1,25 @@
+﻿<!--7. Write a jQuery Code to add a tag at the beginning of the list item, containing the index of the list item-->
+
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>jQuery</title>
+</head>
+<body>
+    <ul>
+        <li>CSHARP</li>
+        <li>SQL</li>
+        <li>ADO</li>
+    </ul>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $("ul li").each(function (index)
+        {
+            $(this).prepend("<strong>" + index + " </strong>");
+        });
+    </script>
+</body>
+</html>

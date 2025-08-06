@@ -1,0 +1,25 @@
+﻿<!--2. Write a JavaScript for loop that will iterate from 0 to 15.
+For each iteration, it will check if the current number is odd or even, and display a message to the screen.-->
+
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Odd or Even</title>
+</head>
+<body>
+    <h3>Odd or Even</h3>
+    <div id="output"></div>
+    <script>
+        for (let i = 0; i <= 15; i++)
+        {
+            let message = (i % 2 === 0) ? `${i} is even` : `${i} is odd`;
+
+            let para = document.createElement("p");
+            para.textContent = message;
+            document.getElementById("output").appendChild(para);
+        }
+    </script>
+</body>
+</html>

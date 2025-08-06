@@ -1,0 +1,21 @@
+﻿<!--8. Append a <p> element with a text message when an <input> field is changed.-->
+
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Append Alert</title>
+</head>
+<body>
+    <input type="text" id="myInput">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $("#myInput").on("change", function ()
+        {
+            $("body").append("<p>Input changed!</p>");
+        });
+    </script>
+</body>
+</html>
