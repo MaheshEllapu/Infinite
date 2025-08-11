@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{35F547E4-33E8-4DCB-B891-880770443727}</ProjectGuid>
+    <ProjectGuid>{8D99FC40-A5B4-4FEC-9841-9E3A4D2EB790}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>CodingChallenge7</RootNamespace>
-    <AssemblyName>CodingChallenge7</AssemblyName>
+    <RootNamespace>Mini_Project_RRS</RootNamespace>
+    <AssemblyName>Mini_Project_RRS</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -43,20 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminMenu.cs" />
+    <Compile Include="AuthService.cs" />
+    <Compile Include="Connection.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserMenu.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="4.html" />
-    <Content Include="5.html" />
-    <Content Include="6.html" />
-    <Content Include="7.html" />
-    <Content Include="8.html" />
-    <Content Include="3.html" />
-    <Content Include="1.html" />
-    <Content Include="2.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
