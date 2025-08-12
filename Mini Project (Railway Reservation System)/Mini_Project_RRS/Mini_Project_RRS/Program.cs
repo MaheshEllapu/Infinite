@@ -10,6 +10,7 @@ namespace Mini_Project_RRS
     {
         static void Main(string[] args)
         {
+            Console.OutputEncoding = Encoding.UTF8;
             Console.Title = "Railway Reservation System";
             while (true)
             {

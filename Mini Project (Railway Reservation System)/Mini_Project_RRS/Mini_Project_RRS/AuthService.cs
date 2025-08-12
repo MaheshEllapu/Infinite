@@ -88,4 +88,11 @@ namespace Mini_Project_RRS
             LoggedInUsername = null;
         }
     }
+    public class Reservation
+    {
+        public string CustomerName { get; set; }
+        public int Age { get; set; }
+        public string Gender { get; set; }
+    }
+
 }

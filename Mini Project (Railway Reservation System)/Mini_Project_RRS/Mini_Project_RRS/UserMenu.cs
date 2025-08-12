@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 
 namespace Mini_Project_RRS
@@ -29,7 +30,6 @@ namespace Mini_Project_RRS
                 }
             }
         }
-
         private static void ReserveTicket()
         {
             Console.Clear();
@@ -41,18 +41,36 @@ namespace Mini_Project_RRS
                 Console.Write("Enter Destination: ");
                 string destination = Console.ReadLine();
                 Console.Write("Enter Date of Travel (YYYY-MM-DD): ");
-                DateTime dateOfTravel = DateTime.Parse(Console.ReadLine());
+                DateTime dateOfTravel;
+                if (!DateTime.TryParse(Console.ReadLine(), out dateOfTravel))
+                {
+                    Console.WriteLine("Invalid date format. Please use YYYY-MM-DD.");
+                    Console.ReadKey();
+                    return;
+                }
 
-                string query = "SELECT * FROM TrainDetails WHERE Source = @Source AND Destination = @Destination AND IsDeleted = 0";
+                if (dateOfTravel.Date < DateTime.Now.Date)
+                {
+                    Console.WriteLine("Booking failed: You cannot book a ticket for a past date.");
+                    Console.ReadKey();
+                    return;
+                }
+
+                int selectedTrainNumber;
+                string selectedClass;
+                int numberOfSeats;
+                decimal costPerSeat = 0;
+                int seatsAvailable = 0;
+                TimeSpan departureTime = new TimeSpan();
 
                 using (SqlConnection connection = Connection.GetConnection())
                 {
+                    connection.Open();
+                    string query = "SELECT * FROM TrainDetails WHERE LOWER(Source) = LOWER(@Source) AND LOWER(Destination) = LOWER(@Destination) AND IsDeleted = 0";
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@Source", source);
                         command.Parameters.AddWithValue("@Destination", destination);
-
-                        connection.Open();
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             if (!reader.HasRows)
@@ -72,11 +90,119 @@ namespace Mini_Project_RRS
                 }
 
                 Console.Write("\nEnter Train Number to book: ");
-                int selectedTrainNumber = int.Parse(Console.ReadLine());
-                Console.Write("Enter Class (1AC, 2AC, 3AC, 3E, Sleeper): ");
-                string classType = Console.ReadLine();
-                Console.Write("Enter Customer Name: ");
-                string customerName = Console.ReadLine();
+                if (!int.TryParse(Console.ReadLine(), out selectedTrainNumber))
+                {
+                    Console.WriteLine("Invalid train number.");
+                    Console.ReadKey();
+                    return;
+                }
+
+                using (SqlConnection connection = Connection.GetConnection())
+                {
+                    connection.Open();
+                    string trainDetailsQuery = "SELECT * FROM TrainDetails WHERE TrainNumber = @TrainNumber AND IsDeleted = 0";
+                    using (SqlCommand command = new SqlCommand(trainDetailsQuery, connection))
+                    {
+                        command.Parameters.AddWithValue("@TrainNumber", selectedTrainNumber);
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                departureTime = (TimeSpan)reader["Departure"];
+
+                                if (dateOfTravel.Date == DateTime.Now.Date && departureTime < DateTime.Now.TimeOfDay)
+                                {
+                                    Console.WriteLine("Booking failed: This train has already departed today.");
+                                    Console.ReadKey();
+                                    return;
+                                }
+
+                                Console.WriteLine("\nAvailable Classes and Costs:");
+                                Console.WriteLine("-------------------------------------------------------");
+                                Console.WriteLine($"{"Class",-10} {"Available Seats",-15} {"Cost per Seat",-15}");
+                                Console.WriteLine("-------------------------------------------------------");
+                                Console.WriteLine($"{"1AC",-10} {reader["Seats_1AC"],-15} {reader["Cost_1AC"],-15:C}");
+                                Console.WriteLine($"{"2AC",-10} {reader["Seats_2AC"],-15} {reader["Cost_2AC"],-15:C}");
+                                Console.WriteLine($"{"3AC",-10} {reader["Seats_3AC"],-15} {reader["Cost_3AC"],-15:C}");
+                                Console.WriteLine($"{"3E",-10} {reader["Seats_3E"],-15} {reader["Cost_3E"],-15:C}");
+                                Console.WriteLine($"{"Sleeper",-10} {reader["Seats_Sleeper"],-15} {reader["Cost_Sleeper"],-15:C}");
+                                Console.WriteLine("-------------------------------------------------------");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Invalid train number.");
+                                Console.ReadKey();
+                                return;
+                            }
+                        }
+                    }
+                }
+
+                Console.Write("\nEnter Class to book (1AC, 2AC, etc.): ");
+                selectedClass = Console.ReadLine();
+                Console.Write("Enter number of seats to book: ");
+                if (!int.TryParse(Console.ReadLine(), out numberOfSeats) || numberOfSeats <= 0)
+                {
+                    Console.WriteLine("Invalid number of seats.");
+                    Console.ReadKey();
+                    return;
+                }
+
+                using (SqlConnection connection = Connection.GetConnection())
+                {
+                    connection.Open();
+                    string checkQuery = $"SELECT Cost_{selectedClass}, Seats_{selectedClass} FROM TrainDetails WHERE TrainNumber = @TrainNumber";
+                    using (SqlCommand checkCommand = new SqlCommand(checkQuery, connection))
+                    {
+                        checkCommand.Parameters.AddWithValue("@TrainNumber", selectedTrainNumber);
+                        using (SqlDataReader reader = checkCommand.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                costPerSeat = reader.GetDecimal(0);
+                                seatsAvailable = reader.GetInt32(1);
+                            }
+                        }
+                    }
+                }
+
+                if (numberOfSeats > seatsAvailable)
+                {
+                    Console.WriteLine($"Booking Failed: Only {seatsAvailable} seats are available in {selectedClass}.");
+                    Console.ReadKey();
+                    return;
+                }
+
+                List<Reservation> passengers = new List<Reservation>();
+                for (int i = 0; i < numberOfSeats; i++)
+                {
+                    string name;
+                    int age;
+                    string gender;
+
+                    Console.WriteLine($"\nEnter details for passenger {i + 1}:");
+                    Console.Write("Name: ");
+                    name = Console.ReadLine();
+                    Console.Write("Age: ");
+                    while (!int.TryParse(Console.ReadLine(), out age) || age <= 0)
+                    {
+                        Console.Write("Invalid age. Please enter a valid number: ");
+                    }
+                    Console.Write("Gender (M/F/O): ");
+                    gender = Console.ReadLine();
+                    while (gender.ToUpper() != "M" && gender.ToUpper() != "F" && gender.ToUpper() != "O")
+                    {
+                        Console.Write("Invalid gender. Please enter M, F, or O: ");
+                        gender = Console.ReadLine();
+                    }
+
+                    passengers.Add(new Reservation
+                    {
+                        CustomerName = name,
+                        Age = age,
+                        Gender = gender
+                    });
+                }
 
                 using (SqlConnection connection = Connection.GetConnection())
                 {
@@ -84,55 +210,40 @@ namespace Mini_Project_RRS
                     SqlTransaction transaction = connection.BeginTransaction();
                     try
                     {
-                        decimal totalCost = 0;
-                        int seatsAvailable = 0;
+                        string insertQuery = @"INSERT INTO Reservation (PNR, UserID, TrainNumber, ClassType, DateOfTravel, DateOfBooking, TotalCost, BerthAllotment, CustomerName, Age, Gender, IsCancelled, IsDeleted)
+                                           VALUES (@PNR, @UserID, @TrainNumber, @ClassType, @DateOfTravel, GETDATE(), @TotalCost, @BerthAllotment, @CustomerName, @Age, @Gender, 0, 0)";
 
-                        string checkQuery = $"SELECT Cost_{classType}, Seats_{classType} FROM TrainDetails WHERE TrainNumber = @TrainNumber";
-                        using (SqlCommand checkCommand = new SqlCommand(checkQuery, connection, transaction))
-                        {
-                            checkCommand.Parameters.AddWithValue("@TrainNumber", selectedTrainNumber);
-                            using (SqlDataReader reader = checkCommand.ExecuteReader())
-                            {
-                                if (reader.Read())
-                                {
-                                    totalCost = reader.GetDecimal(0);
-                                    seatsAvailable = reader.GetInt32(1);
-                                }
-                            }
-                        }
+                        string pnr = Guid.NewGuid().ToString().Substring(0, 8).ToUpper();
+                        decimal totalCost = costPerSeat * numberOfSeats;
 
-                        if (seatsAvailable > 0)
+                        foreach (var passenger in passengers)
                         {
-                            string pnr = Guid.NewGuid().ToString().Substring(0, 8).ToUpper();
-                            string insertQuery = @"INSERT INTO Reservation (PNR, UserID, TrainNumber, ClassType, DateOfTravel, TotalCost, BerthAllotment, CustomerName)
-                                               VALUES (@PNR, @UserID, @TrainNumber, @ClassType, @DateOfTravel, @TotalCost, 'Berth Allotted', @CustomerName)";
                             using (SqlCommand insertCommand = new SqlCommand(insertQuery, connection, transaction))
                             {
                                 insertCommand.Parameters.AddWithValue("@PNR", pnr);
                                 insertCommand.Parameters.AddWithValue("@UserID", AuthService.LoggedInUserId);
                                 insertCommand.Parameters.AddWithValue("@TrainNumber", selectedTrainNumber);
-                                insertCommand.Parameters.AddWithValue("@ClassType", classType);
+                                insertCommand.Parameters.AddWithValue("@ClassType", selectedClass);
                                 insertCommand.Parameters.AddWithValue("@DateOfTravel", dateOfTravel);
                                 insertCommand.Parameters.AddWithValue("@TotalCost", totalCost);
-                                insertCommand.Parameters.AddWithValue("@CustomerName", customerName);
+                                insertCommand.Parameters.AddWithValue("@BerthAllotment", "Berth Allotted");
+                                insertCommand.Parameters.AddWithValue("@CustomerName", passenger.CustomerName);
+                                insertCommand.Parameters.AddWithValue("@Age", passenger.Age);
+                                insertCommand.Parameters.AddWithValue("@Gender", passenger.Gender);
                                 insertCommand.ExecuteNonQuery();
                             }
-
-                            string updateQuery = $"UPDATE TrainDetails SET Seats_{classType} = Seats_{classType} - 1 WHERE TrainNumber = @TrainNumber";
-                            using (SqlCommand updateCommand = new SqlCommand(updateQuery, connection, transaction))
-                            {
-                                updateCommand.Parameters.AddWithValue("@TrainNumber", selectedTrainNumber);
-                                updateCommand.ExecuteNonQuery();
-                            }
-
-                            transaction.Commit();
-                            Console.WriteLine($"\nBooking Successful! Your PNR is: {pnr}");
                         }
-                        else
+
+                        string updateQuery = $"UPDATE TrainDetails SET Seats_{selectedClass} = Seats_{selectedClass} - @NumberOfSeats WHERE TrainNumber = @TrainNumber";
+                        using (SqlCommand updateCommand = new SqlCommand(updateQuery, connection, transaction))
                         {
-                            transaction.Rollback();
-                            Console.WriteLine("Booking Failed: No seats available.");
+                            updateCommand.Parameters.AddWithValue("@NumberOfSeats", numberOfSeats);
+                            updateCommand.Parameters.AddWithValue("@TrainNumber", selectedTrainNumber);
+                            updateCommand.ExecuteNonQuery();
                         }
+
+                        transaction.Commit();
+                        Console.WriteLine($"\nBooking Successful! Your PNR is: {pnr}");
                     }
                     catch (Exception ex)
                     {
@@ -147,12 +258,11 @@ namespace Mini_Project_RRS
             }
             Console.ReadKey();
         }
-
         private static void ViewMyTickets()
         {
             Console.Clear();
             Console.WriteLine("--- My Tickets ---");
-            string query = "SELECT R.PNR, T.TrainName, R.DateOfTravel, R.ClassType, R.IsCancelled FROM Reservation R JOIN TrainDetails T ON R.TrainNumber = T.TrainNumber WHERE R.UserID = @UserID AND R.IsDeleted = 0";
+            string query = "SELECT R.PNR, T.TrainName, R.CustomerName, R.Age, R.Gender, R.DateOfTravel, R.ClassType, R.IsCancelled FROM Reservation R JOIN TrainDetails T ON R.TrainNumber = T.TrainNumber WHERE R.UserID = @UserID AND R.IsDeleted = 0";
 
             using (SqlConnection connection = Connection.GetConnection())
             {
@@ -171,11 +281,11 @@ namespace Mini_Project_RRS
                             }
                             else
                             {
-                                Console.WriteLine($"{"PNR",-15} {"Train Name",-20} {"Date of Travel",-20} {"Class",-10} {"Cancelled",-10}");
-                                Console.WriteLine("--------------------------------------------------------------------------------");
+                                Console.WriteLine($"{"PNR",-15} {"Train Name",-20} {"Customer Name",-20} {"Age",-5} {"Gender",-8} {"Date of Travel",-20} {"Class",-10} {"Cancelled",-10}");
+                                Console.WriteLine("--------------------------------------------------------------------------------------------------------------------");
                                 while (reader.Read())
                                 {
-                                    Console.WriteLine($"{reader["PNR"],-15} {reader["TrainName"],-20} {((DateTime)reader["DateOfTravel"]).ToString("yyyy-MM-dd"),-20} {reader["ClassType"],-10} {((bool)reader["IsCancelled"] ? "Yes" : "No"),-10}");
+                                    Console.WriteLine($"{reader["PNR"],-15} {reader["TrainName"],-20} {reader["CustomerName"],-20} {reader["Age"],-5} {reader["Gender"],-8} {((DateTime)reader["DateOfTravel"]).ToString("yyyy-MM-dd"),-20} {reader["ClassType"],-10} {((bool)reader["IsCancelled"] ? "Yes" : "No"),-10}");
                                 }
                             }
                         }
@@ -194,7 +304,7 @@ namespace Mini_Project_RRS
             Console.WriteLine("--- Cancel a Ticket ---");
             try
             {
-                Console.Write("Enter PNR to cancel: ");
+                Console.Write("Enter PNR to cancel a ticket from: ");
                 string pnr = Console.ReadLine();
 
                 using (SqlConnection connection = Connection.GetConnection())
@@ -203,80 +313,106 @@ namespace Mini_Project_RRS
                     SqlTransaction transaction = connection.BeginTransaction();
                     try
                     {
-                        int reservationID = 0;
-                        string classType = "";
-                        int trainNumber = 0;
-                        decimal totalCost = 0;
-                        bool isCancelled = false;
+                        string passengerQuery = "SELECT CustomerName, ReservationID FROM Reservation WHERE PNR = @PNR AND UserID = @UserID AND IsCancelled = 0 AND IsDeleted = 0";
+                        Dictionary<string, int> passengers = new Dictionary<string, int>();
 
-                        string getDetailsQuery = "SELECT ReservationID, ClassType, TrainNumber, TotalCost, IsCancelled FROM Reservation WHERE PNR = @PNR AND UserID = @UserID";
-                        using (SqlCommand getDetailsCommand = new SqlCommand(getDetailsQuery, connection, transaction))
+                        using (SqlCommand command = new SqlCommand(passengerQuery, connection, transaction))
                         {
-                            getDetailsCommand.Parameters.AddWithValue("@PNR", pnr);
-                            getDetailsCommand.Parameters.AddWithValue("@UserID", AuthService.LoggedInUserId);
-                            using (SqlDataReader reader = getDetailsCommand.ExecuteReader())
+                            command.Parameters.AddWithValue("@PNR", pnr);
+                            command.Parameters.AddWithValue("@UserID", AuthService.LoggedInUserId);
+                            using (SqlDataReader reader = command.ExecuteReader())
                             {
-                                if (reader.Read())
+                                if (!reader.HasRows)
                                 {
-                                    reservationID = reader.GetInt32(0);
-                                    classType = reader.GetString(1);
-                                    trainNumber = reader.GetInt32(2);
-                                    totalCost = reader.GetDecimal(3);
-                                    isCancelled = reader.GetBoolean(4);
+                                    Console.WriteLine("Invalid PNR, or all tickets for this PNR are already cancelled.");
+                                    transaction.Rollback();
+                                    Console.ReadKey();
+                                    return;
+                                }
+
+                                Console.WriteLine("\nPassengers on this PNR:");
+                                int i = 1;
+                                while (reader.Read())
+                                {
+                                    string customerName = reader["CustomerName"].ToString();
+                                    int reservationId = Convert.ToInt32(reader["ReservationID"]);
+                                    Console.WriteLine($"{i}. {customerName}");
+                                    passengers.Add(customerName, reservationId);
+                                    i++;
                                 }
                             }
                         }
 
-                        if (reservationID == 0)
+                        Console.Write("\nEnter the name of the passenger to cancel: ");
+                        string passengerName = Console.ReadLine();
+
+                        if (!passengers.ContainsKey(passengerName))
                         {
-                            Console.WriteLine("Invalid PNR or you do not have permission to cancel this ticket.");
+                            Console.WriteLine("Invalid passenger name. Cancellation aborted.");
                             transaction.Rollback();
+                            Console.ReadKey();
+                            return;
                         }
-                        else if (isCancelled)
+
+                        int selectedReservationID = passengers[passengerName];
+
+                        Console.Write($"\nAre you sure you want to cancel the ticket for {passengerName}? (Y/N): ");
+                        if (Console.ReadLine().ToUpper() == "Y")
                         {
-                            Console.WriteLine("This ticket has already been cancelled.");
-                            transaction.Rollback();
+                            // Get the cost of a SINGLE ticket from the TrainDetails table
+                            string getClassAndTrainQuery = "SELECT R.ClassType, T.TrainNumber, T.Cost_1AC, T.Cost_2AC, T.Cost_3AC, T.Cost_3E, T.Cost_Sleeper FROM Reservation R JOIN TrainDetails T ON R.TrainNumber = T.TrainNumber WHERE R.ReservationID = @ReservationID";
+                            string classType = "";
+                            int trainNumber = 0;
+                            decimal individualTicketCost = 0;
+
+                            using (SqlCommand getDetailsCommand = new SqlCommand(getClassAndTrainQuery, connection, transaction))
+                            {
+                                getDetailsCommand.Parameters.AddWithValue("@ReservationID", selectedReservationID);
+                                using (SqlDataReader reader = getDetailsCommand.ExecuteReader())
+                                {
+                                    if (reader.Read())
+                                    {
+                                        classType = reader.GetString(reader.GetOrdinal("ClassType"));
+                                        trainNumber = reader.GetInt32(reader.GetOrdinal("TrainNumber"));
+
+                                        // Get the cost based on the class type
+                                        individualTicketCost = reader.GetDecimal(reader.GetOrdinal($"Cost_{classType}"));
+                                    }
+                                }
+                            }
+
+                            decimal refundAmount = individualTicketCost / 2;
+
+                            string updateReservationQuery = "UPDATE Reservation SET IsCancelled = 1 WHERE ReservationID = @ReservationID";
+                            using (SqlCommand updateReservationCommand = new SqlCommand(updateReservationQuery, connection, transaction))
+                            {
+                                updateReservationCommand.Parameters.AddWithValue("@ReservationID", selectedReservationID);
+                                updateReservationCommand.ExecuteNonQuery();
+                            }
+
+                            string insertCancellationQuery = "INSERT INTO Cancellation (PNR, ReservationID, RefundAmount) VALUES (@PNR, @ReservationID, @RefundAmount)";
+                            using (SqlCommand insertCancellationCommand = new SqlCommand(insertCancellationQuery, connection, transaction))
+                            {
+                                insertCancellationCommand.Parameters.AddWithValue("@PNR", pnr);
+                                insertCancellationCommand.Parameters.AddWithValue("@ReservationID", selectedReservationID);
+                                insertCancellationCommand.Parameters.AddWithValue("@RefundAmount", refundAmount);
+                                insertCancellationCommand.ExecuteNonQuery();
+                            }
+
+                            string updateTrainQuery = $"UPDATE TrainDetails SET Seats_{classType} = Seats_{classType} + 1 WHERE TrainNumber = @TrainNumber";
+                            using (SqlCommand updateTrainCommand = new SqlCommand(updateTrainQuery, connection, transaction))
+                            {
+                                updateTrainCommand.Parameters.AddWithValue("@TrainNumber", trainNumber);
+                                updateTrainCommand.ExecuteNonQuery();
+                            }
+
+                            transaction.Commit();
+                            Console.WriteLine($"\nCancellation successful. A refund of {refundAmount:C} will be processed for {passengerName}.");
                         }
                         else
                         {
-                            Console.Write($"Are you sure you want to cancel ticket with PNR: {pnr}? (Y/N): ");
-                            if (Console.ReadLine().ToUpper() == "Y")
-                            {
-                                decimal refundAmount = totalCost / 2; // 50% refund
-
-                                // Step 1: Update Reservation status
-                                string updateReservationQuery = "UPDATE Reservation SET IsCancelled = 1 WHERE ReservationID = @ReservationID";
-                                using (SqlCommand updateReservationCommand = new SqlCommand(updateReservationQuery, connection, transaction))
-                                {
-                                    updateReservationCommand.Parameters.AddWithValue("@ReservationID", reservationID);
-                                    updateReservationCommand.ExecuteNonQuery();
-                                }
-
-                                // Step 2: Insert into Cancellation table
-                                string insertCancellationQuery = "INSERT INTO Cancellation (ReservationID, RefundAmount) VALUES (@ReservationID, @RefundAmount)";
-                                using (SqlCommand insertCancellationCommand = new SqlCommand(insertCancellationQuery, connection, transaction))
-                                {
-                                    insertCancellationCommand.Parameters.AddWithValue("@ReservationID", reservationID);
-                                    insertCancellationCommand.Parameters.AddWithValue("@RefundAmount", refundAmount);
-                                    insertCancellationCommand.ExecuteNonQuery();
-                                }
-
-                                // Step 3: Increment seats in TrainDetails
-                                string updateTrainQuery = $"UPDATE TrainDetails SET Seats_{classType} = Seats_{classType} + 1 WHERE TrainNumber = @TrainNumber";
-                                using (SqlCommand updateTrainCommand = new SqlCommand(updateTrainQuery, connection, transaction))
-                                {
-                                    updateTrainCommand.Parameters.AddWithValue("@TrainNumber", trainNumber);
-                                    updateTrainCommand.ExecuteNonQuery();
-                                }
-
-                                transaction.Commit();
-                                Console.WriteLine($"\nCancellation successful. A refund of {refundAmount:C} will be processed.");
-                            }
-                            else
-                            {
-                                Console.WriteLine("Cancellation aborted.");
-                                transaction.Rollback();
-                            }
+                            Console.WriteLine("Cancellation aborted.");
+                            transaction.Rollback();
                         }
                     }
                     catch (Exception ex)
@@ -294,8 +430,3 @@ namespace Mini_Project_RRS
         }
     }
 }
-
-
-
-
-

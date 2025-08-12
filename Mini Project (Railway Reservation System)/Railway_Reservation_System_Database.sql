@@ -95,3 +95,29 @@ select * from Users
 select * from TrainDetails
 select * from Reservation
 select * from Cancellation
+
+-- Add Age column
+ALTER TABLE Reservation
+ADD Age INT;
+ 
+-- Add Gender column
+ALTER TABLE Reservation
+ADD Gender NVARCHAR(10);
+ 
+
+-- Find and drop the unique constraint on the PNR column
+DECLARE @sql NVARCHAR(MAX);
+SELECT @sql = 'ALTER TABLE [dbo].[Reservation] DROP CONSTRAINT ' + name
+FROM sys.key_constraints
+WHERE parent_object_id = OBJECT_ID('dbo.Reservation')
+AND type_desc = 'UNIQUE_CONSTRAINT';
+EXEC sp_executesql @sql;
+ 
+ -- This command adds a PNR column to the Cancellation table if it doesn't already exist.
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE Name = N'PNR' AND Object_ID = Object_ID(N'Cancellation'))
+BEGIN
+    ALTER TABLE Cancellation ADD PNR NVARCHAR(255) NULL;
+END
+ 
+ select * from Users
+delete from Users where UserID=15
