@@ -119,5 +119,5 @@ BEGIN
     ALTER TABLE Cancellation ADD PNR NVARCHAR(255) NULL;
 END
  
- select * from Users
+select * from Users
 delete from Users where UserID=15

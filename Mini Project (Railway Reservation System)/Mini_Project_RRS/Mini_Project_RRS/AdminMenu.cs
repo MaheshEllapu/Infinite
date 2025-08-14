@@ -47,7 +47,7 @@ namespace Mini_Project_RRS
                 using (SqlConnection connection = Connection.GetConnection())
                 {
                     connection.Open();
-                    // Corrected query: The table name [User] is now in square brackets.
+                    
                     string query = "SELECT UserID, UserName, Email, PhoneNumber, Password, Role, IsDeleted FROM [Users] ORDER BY UserID";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
