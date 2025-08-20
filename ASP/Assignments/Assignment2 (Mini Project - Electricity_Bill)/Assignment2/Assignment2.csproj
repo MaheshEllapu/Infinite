@@ -108,6 +108,7 @@
     <Content Include="About.aspx" />
     <Content Include="BillEntry.aspx" />
     <Content Include="BillRetrieve.aspx" />
+    <Content Include="Bills.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -184,6 +185,13 @@
     </Compile>
     <Compile Include="BillRetrieve.aspx.designer.cs">
       <DependentUpon>BillRetrieve.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Bills.aspx.cs">
+      <DependentUpon>Bills.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Bills.aspx.designer.cs">
+      <DependentUpon>Bills.aspx</DependentUpon>
     </Compile>
     <Compile Include="BillValidator.cs" />
     <Compile Include="Contact.aspx.cs">

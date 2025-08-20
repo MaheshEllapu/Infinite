@@ -1,0 +1,75 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace Assignment2
+{
+    public partial class Bills : System.Web.UI.Page
+    {
+        private ElectricityBoard _board = new ElectricityBoard();
+        private int LeftToAdd
+        {
+            get => (int)(ViewState["LeftToAdd"] ?? 0);
+            set => ViewState["LeftToAdd"] = value;
+        }
+        protected void btnShowAdd_Click(object sender, EventArgs e)
+        {
+            pnlAddBill.Visible = true;
+            pnlViewBill.Visible = false;
+        }
+        protected void btnShowView_Click(object sender, EventArgs e)
+        {
+            pnlAddBill.Visible = false;
+            pnlViewBill.Visible = true;
+        }
+        protected void btnAdd_Click(object sender, EventArgs e)
+        {
+            lblMsg.Text = ""; lblOut.Text = "";
+            if (LeftToAdd <= 0)
+                LeftToAdd = Math.Max(1, int.TryParse(txtCount.Text, out var c) ? c : 1);
+            try
+            {
+                BillValidator.ValidateConsumerNumberOrThrow(txtCN.Text.Trim());
+            }
+            catch (FormatException ex)
+            {
+                lblMsg.Text = ex.Message; return;
+            }
+            if (!int.TryParse(txtUnits.Text.Trim(), out int units))
+            {
+                lblMsg.Text = "Given units is invalid"; return;
+            }
+            string unitsErr = BillValidator.ValidateUnitsConsumed(units);
+            if (!string.IsNullOrEmpty(unitsErr)) { lblMsg.Text = unitsErr; return; }
+            var eb = new ElectricityBill
+            {
+                ConsumerNumber = txtCN.Text.Trim(),
+                ConsumerName = txtName.Text.Trim(),
+                UnitsConsumed = units
+            };
+            _board.CalculateBill(eb);
+            _board.AddBill(eb);
+            lblOut.Text = $"{eb.ConsumerNumber} {eb.ConsumerName} {eb.UnitsConsumed} Bill Amount : {eb.BillAmount}";
+            LeftToAdd--;
+            if (LeftToAdd > 0)
+            {
+                lblMsg.Text = $"Saved. Enter next customer ({LeftToAdd} left).";
+                txtCN.Text = txtName.Text = txtUnits.Text = "";
+                txtCN.Focus();
+            }
+            else
+            {
+                lblMsg.Text = "All entries saved.";
+            }
+        }
+        protected void btnGet_Click(object sender, EventArgs e)
+        {
+            if (!int.TryParse(txtN.Text.Trim(), out int n) || n <= 0) return;
+            gv.DataSource = _board.Generate_N_BillDetails(n);
+            gv.DataBind();
+        }
+    }
+}
