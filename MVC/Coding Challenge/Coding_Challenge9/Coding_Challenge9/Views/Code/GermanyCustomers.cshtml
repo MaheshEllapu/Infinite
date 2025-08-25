@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Customer>
+
+@{ ViewBag.Title = "Customers in Germany"; }
+
+<h2>Customers Residing in Germany</h2>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Company Name</th>
+        <th>Contact Name</th>
+        <th>City</th>
+        <th>Country</th>
+    </tr>
+
+    @foreach (var c in Model)
+    {
+<tr>
+    <td>@c.CompanyName</td>
+    <td>@c.ContactName</td>
+    <td>@c.City</td>
+    <td>@c.Country</td>
+</tr>}
+</table>
