@@ -86,3 +86,6 @@ C:\Infinite\API\Coding Challenge\CodingChallenge10\CodingChallenge10\CodingChall
 C:\Infinite\API\Coding Challenge\CodingChallenge10\CodingChallenge10\CodingChallenge10\obj\Debug\CodingChallenge10.csproj.CopyComplete
 C:\Infinite\API\Coding Challenge\CodingChallenge10\CodingChallenge10\CodingChallenge10\obj\Debug\CodingChallenge10.dll
 C:\Infinite\API\Coding Challenge\CodingChallenge10\CodingChallenge10\CodingChallenge10\obj\Debug\CodingChallenge10.pdb
+C:\Infinite\API\Coding Challenge\CodingChallenge10\CodingChallenge10\CodingChallenge10\bin\Swashbuckle.Core.dll
+C:\Infinite\API\Coding Challenge\CodingChallenge10\CodingChallenge10\CodingChallenge10\bin\WebActivatorEx.dll
+C:\Infinite\API\Coding Challenge\CodingChallenge10\CodingChallenge10\CodingChallenge10\obj\Debug\CodingChallenge10.csproj.AssemblyReference.cache
